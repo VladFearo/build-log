@@ -43,6 +43,15 @@ function readJsonFile(filepath) {
   }
 }
 
+function parseDataToString(data) {
+  const { appName, version, environment } = data;
+  return [
+    `App: ${appName}`,
+    `Version: ${version}`,
+    `Environment: ${environment}`,
+  ].join("\n");
+}
+
 const args = process.argv.slice(2);
 
 if (args.length === 0) {
@@ -53,7 +62,8 @@ if (args.length === 0) {
   const configPath = args[0];
   const data = readJsonFile(configPath);
   if (data && validateConfig(data)) {
-    console.log(data);
+    const parsedData = parseDataToString(data);
+    console.log(parsedData);
   } else {
     exitWithError("Error: invalid config");
   }
