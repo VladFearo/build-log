@@ -5,6 +5,10 @@ function exitWithError(error) {
   process.exit(1);
 }
 
+function isObject(value) {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 function isNonEmptyString(value) {
   return typeof value === "string" && value.trim() !== "";
 }
@@ -12,10 +16,12 @@ function isNonEmptyString(value) {
 function validateConfig(data) {
   const validEnv = ["development", "test", "production"];
   const isValidEnv = validEnv.includes(data.environment);
+  const isValidFeat = isObject(data.features);
   if (
     isNonEmptyString(data.appName) &&
     isNonEmptyString(data.version) &&
-    isValidEnv
+    isValidEnv &&
+    isValidFeat
   ) {
     return true;
   } else {
