@@ -1,9 +1,14 @@
+const fs = require("fs");
+
+
 const args = process.argv.slice(2);
 
-if (path.length === 0 ){
+if (args.length === 0 ){
     console.error("Error: missing config file path")
-} else if(path.length > 1){
+} else if(args.length > 1){
     console.error("Error: too many arguments")
 } else {
-    console.log(`Config path: ${args[0]}`);
+    const configPath = args[0];
+    const fileContent = fs.readFileSync(configPath, "utf8");
+    console.log(fileContent);
 }
