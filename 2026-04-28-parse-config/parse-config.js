@@ -13,15 +13,23 @@ function isNonEmptyString(value) {
   return typeof value === "string" && value.trim() !== "";
 }
 
+function isBoolean(value) {
+  return typeof value === "boolean";
+}
+
 function validateConfig(data) {
   const validEnv = ["development", "test", "production"];
   const isValidEnv = validEnv.includes(data.environment);
   const isValidFeat = isObject(data.features);
+  const isValidFeatValue =
+    isValidFeat &&
+    Object.values(data.features).every((value) => isBoolean(value));
   if (
     isNonEmptyString(data.appName) &&
     isNonEmptyString(data.version) &&
     isValidEnv &&
-    isValidFeat
+    isValidFeat &&
+    isValidFeatValue
   ) {
     return true;
   } else {
