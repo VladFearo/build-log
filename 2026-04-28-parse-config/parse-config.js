@@ -1,14 +1,24 @@
 const fs = require("fs");
 
+function exitWithError(error) {
+  console.error(error);
+  process.exit(1);
+}
+
 function isNonEmptyString(value) {
   return typeof value === "string" && value.trim() !== "";
 }
 
-function validateRequiredFields(data) {
-  if (isNonEmptyString(data.appName) && isNonEmptyString(data.version)) {
+function validateConfig(data) {
+  const validEnv = ["development", "test", "production"];
+  const isValidEnv = validEnv.includes(data.environment);
+  if (
+    isNonEmptyString(data.appName) &&
+    isNonEmptyString(data.version) &&
+    isValidEnv
+  ) {
     return true;
   } else {
-    console.error("Error: invalid config");
     return false;
   }
 }
@@ -20,25 +30,25 @@ function readJsonFile(filepath) {
     return data;
   } catch (err) {
     if (err.code === "ENOENT") {
-      console.error("Error: file not found");
+      exitWithError("Error: file not found");
     } else {
-      console.error("Error: invalid JSON");
+      exitWithError("Error: invalid JSON");
     }
-
-    return null;
   }
 }
 
 const args = process.argv.slice(2);
 
 if (args.length === 0) {
-  console.error("Error: missing config file path");
+  exitWithError("Error: missing config file path");
 } else if (args.length > 1) {
-  console.error("Error: too many arguments");
+  exitWithError("Error: too many arguments");
 } else {
   const configPath = args[0];
   const data = readJsonFile(configPath);
-  if (data && validateRequiredFields(data)) {
+  if (data && validateConfig(data)) {
     console.log(data);
+  } else {
+    exitWithError("Error: invalid config");
   }
 }
