@@ -6,7 +6,10 @@ function readJsonFile(filepath){
         const data = JSON.parse(fileContent);
         return data;
     } catch (err) {
-        console.error("Error: invalid JSON");
+        if(err.code==="ENOENT"){
+            console.error("Error: file not found");
+        } else{console.error("Error: invalid JSON");}
+        
         return null;
     }
     
