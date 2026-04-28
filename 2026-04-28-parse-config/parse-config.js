@@ -43,12 +43,34 @@ function readJsonFile(filepath) {
   }
 }
 
+function splitFeaturesByStatus(features) {
+  const enabled = [];
+  const disabled = [];
+  for (const [feat, status] of Object.entries(features)) {
+    if (status) {
+      enabled.push(feat);
+    } else {
+      disabled.push(feat);
+    }
+  }
+  return { enabled, disabled };
+}
+
 function parseDataToString(data) {
-  const { appName, version, environment } = data;
+  const { appName, version, environment, features } = data;
+  const { enabled, disabled } = splitFeaturesByStatus(features);
+  const stringifiedEnabled = enabled.map((feat) => `- ${feat}`).join("\n");
+  const stringifiedDisabled = disabled.map((feat) => `- ${feat}`).join("\n");
   return [
     `App: ${appName}`,
     `Version: ${version}`,
     `Environment: ${environment}`,
+    "",
+    "Enabled features:",
+    stringifiedEnabled,
+    "",
+    "Disabled features:",
+    stringifiedDisabled,
   ].join("\n");
 }
 
