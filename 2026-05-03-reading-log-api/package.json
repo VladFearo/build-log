@@ -1,0 +1,24 @@
+{
+  "name": "build-log",
+  "version": "1.0.0",
+  "description": "Small finished programming projects, tracked over time.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VladFearo/build-log.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/VladFearo/build-log/issues"
+  },
+  "homepage": "https://github.com/VladFearo/build-log#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
