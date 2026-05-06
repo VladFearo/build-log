@@ -1,19 +1,31 @@
 const express = require("express");
+const fs = require("fs");
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
 
-const books = [
-  { id: 1, title: "Stoner", author: "John Williams", finished: true },
-  {
-    id: 2,
-    title: "Beyond Good and Evil",
-    author: "Nietzsche",
-    finished: false,
-  },
-];
+function loadBooks() {
+  try {
+    const data = fs.readFileSync("books.json", "utf-8");
+    return JSON.parse(data);
+  } catch (error) {
+    console.error("Error reading books.json:", error.message);
+    return [];
+  }
+}
+
+let books = loadBooks();
+
+function saveBooks() {
+  try {
+    const data = JSON.stringify(books, null, 2);
+    fs.writeFileSync("books.json", data);
+  } catch (error) {
+    console.error("Error writing to books.json:", error.message);
+  }
+}
 
 function isNonEmptyString(value) {
   return typeof value === "string" && value.trim() !== "";
@@ -49,7 +61,8 @@ app.post("/books", (req, res) => {
     isNonEmptyString(author) &&
     isBoolean(finished)
   ) {
-    const nextId = books.length + 1;
+    const nextId =
+      books.length === 0 ? 1 : Math.max(...books.map((book) => book.id)) + 1;
     const newBook = {
       id: nextId,
       title,
@@ -57,6 +70,7 @@ app.post("/books", (req, res) => {
       finished,
     };
     books.push(newBook);
+    saveBooks();
     res.status(201).json(newBook);
   } else {
     res.status(400).json({ error: "Invalid book data" });
@@ -96,9 +110,11 @@ app.patch("/books/:id", (req, res) => {
 
     updates.finished = finished;
   }
-
+  if (Object.keys(updates).length === 0) {
+    return res.status(400).json({ error: "No valid fields to update" });
+  }
   books[bookIdx] = { ...book, ...updates };
-
+  saveBooks();
   res.json(books[bookIdx]);
 });
 
@@ -110,7 +126,8 @@ app.delete("/books/:id", (req, res) => {
   }
 
   books.splice(bookIdx, 1);
-  res.status(204).send();
+  saveBooks();
+  res.status(200).json({ message: "Book deleted succesfully" });
 });
 
 app.listen(PORT, () => {
