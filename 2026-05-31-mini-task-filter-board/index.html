@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini Task Filter Board</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <h1>Mini Task Filter Board</h1>
+
+      <form id="task-form">
+        <input id="task-input" type="text" placeholder="Add a task..." />
+        <button type="submit">Add Task</button>
+      </form>
+
+      <p id="status-text"></p>
+
+      <section class="filters">
+        <button id="filter-all" type="button">All</button>
+        <button id="filter-active" type="button">Active</button>
+        <button id="filter-completed" type="button">Completed</button>
+      </section>
+
+      <p id="counter-text">0 active / 0 total</p>
+
+      <ul id="task-list"></ul>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
