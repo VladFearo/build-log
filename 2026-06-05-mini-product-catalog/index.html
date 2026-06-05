@@ -1,0 +1,24 @@
+<form id="product-form">
+  <input id="name-input" type="text" placeholder="Product name" />
+  <input id="category-input" type="text" placeholder="Category" />
+  <input id="price-input" type="number" placeholder="Price" />
+
+  <label>
+    <input id="stock-input" type="checkbox" />
+    In stock
+  </label>
+
+  <button type="submit">Add Product</button>
+</form>
+
+<div>
+  <button id="filter-all">All</button>
+  <button id="filter-in-stock">In stock</button>
+  <button id="filter-out-stock">Out of stock</button>
+  <button id="sort-price">Sort by price</button>
+</div>
+
+<p id="counter-text"></p>
+<ul id="product-list"></ul>
+
+<script src="script.js"></script>
