@@ -90,7 +90,7 @@ function getBestSellingProduct(orderList) {
 }
 
 console.log(getAverageCompletedOrderValue(orders));
-// Expected: 716.6666666666666
+// Expected: 750
 
 console.log(getBestSellingProduct(orders));
 // Expected: { name: "Mouse", quantity: 6 }
